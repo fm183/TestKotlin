@@ -50,7 +50,7 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         paint.style = Paint.Style.FILL_AND_STROKE
 
         val allWidth = Math.PI * radios * 2
-        val count = 96
+        val count = 48
         val ringValue = (360 - count * 0.5f) / count
         val tmpWidth = allWidth / 360
         val lineWidth = (tmpWidth * ringValue) / 1.5
@@ -64,10 +64,10 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             }
             canvas.rotate(rotateValue, centerX.toFloat(), centerY.toFloat())
             rotateValue += ringValue + 0.5f
-            path.moveTo(centerX.toFloat(), 20f)
+            path.moveTo(centerX.toFloat(), 80f)
+            path.lineTo(centerX.toFloat(), 80f)
+            path.lineTo((centerX + lineWidth).toFloat(), 80f)
             path.lineTo((centerX + lineWidth).toFloat(), 20f)
-            path.lineTo((centerX + lineWidth).toFloat(), 30f)
-            path.lineTo(centerX.toFloat(), 30f)
             path.lineTo(centerX.toFloat(), 20f)
             path.close()
             canvas.drawPath(path, paint)
@@ -79,16 +79,35 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         textPaint.textSize = 40f
         textPaint.textAlign = Paint.Align.CENTER
 
+
         val text = "13:51:00"
-        canvas.drawText(text, (centerX - lineWidth).toFloat(), centerY.toFloat(), textPaint)
-        canvas.drawText("星期日", (centerX - lineWidth).toFloat(), (centerY + 50).toFloat(), textPaint)
+        val text2 = "星期日"
+        val startCenterX = (mWidth  - textPaint.measureText(text)) / 2 + 60
+        val startCenterX2 = (mWidth  - textPaint.measureText(text2)) / 2 + 50
+        canvas.drawText(text, startCenterX, centerY.toFloat(), textPaint)
+        canvas.drawText(text2, startCenterX2, (centerY + 50).toFloat(), textPaint)
 
         val textRadios = mWidth / 2 - 50 //文字构成的圆的半径
         val s = arrayOf("12", "3", "6", "9")
         for (i in 0..3) {
+            var diffX = 0
+            var diffY = 0
+            if(i == 0){
+                diffX = 10
+                diffY = 60
+            }else if(i == 1){
+                diffX = -60
+                diffY = 0
+            }else if(i == 2){
+                diffX = 10
+                diffY = -60
+            }else if(i == 3){
+                diffX = 70
+                diffY = 10;
+            }
             // Math.PI  就是 π 3.1415926    实际上他就是180°
-            val startX = (mWidth / 2 + textRadios * sin(Math.PI / 2 * i) - textPaint.measureText(s[i]) / 2 + 10).toFloat()
-            val startY = (mWidth / 2 - textRadios * cos(Math.PI / 2 * i) + textPaint.measureText(s[i]) / 2).toFloat()
+            val startX = (mWidth / 2 + textRadios * sin(Math.PI / 2 * i) - textPaint.measureText(s[i]) / 2 + diffX).toFloat()
+            val startY = (mWidth / 2 - textRadios * cos(Math.PI / 2 * i) + textPaint.measureText(s[i]) / 2 + diffY).toFloat()
             canvas.drawText(s[i], startX, startY, textPaint)
         }
     }
