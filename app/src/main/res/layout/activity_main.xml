@@ -31,5 +31,11 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="400dp"
         android:layout_height="400dp"/>
+    <com.example.testkotlin.PathView
+        android:id="@+id/path_view"
+        app:layout_constraintTop_toBottomOf="@id/time_view"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="400dp"
+        android:layout_height="400dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

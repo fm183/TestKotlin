@@ -67,14 +67,14 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             if (i in startCount..endCount) {
                 paint.color = Color.RED
             } else {
-                paint.color = Color.WHITE
+                paint.color = Color.BLUE
             }
             canvas.rotate(rotateValue, centerX.toFloat(), centerY.toFloat())
             rotateValue += ringValue + 0.5f
             path.moveTo(centerX.toFloat(), 20f)
             path.lineTo((centerX + lineWidth).toFloat(), 20f)
             path.lineTo((centerX + lineWidth).toFloat(), 20f + lineHeight)
-            path.quadTo((centerX + lineWidth / 4).toFloat(),20f + lineHeight - 5,centerX.toFloat(),20f + lineHeight)
+            path.quadTo((centerX + lineWidth / 2).toFloat(),20f + lineHeight - 1,centerX.toFloat(),20f + lineHeight)
             canvas.drawPath(path, paint)
             canvas.restore()
         }
@@ -107,7 +107,7 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 diffX = 10
                 diffY = (-lineHeight).toInt()
             }else if(i == 3){
-                diffX = lineHeight.toInt()
+                diffX = lineHeight.toInt() + 10
                 diffY = 10
             }
             // Math.PI  就是 π 3.1415926    实际上他就是180°
