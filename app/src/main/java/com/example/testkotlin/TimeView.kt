@@ -19,8 +19,8 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private var path = Path()
     private var textPaint = TextPaint()
     private var rectF = RectF(edgeDistance,edgeDistance,edgeDistance,edgeDistance)
-    private var lineHeight = 80f
-    private var count = 36
+    private var lineHeight = 40f
+    private var count = 96
     private var startCount = 39
     private var endCount = 43
 
@@ -74,9 +74,7 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             path.moveTo(centerX.toFloat(), 20f)
             path.lineTo((centerX + lineWidth).toFloat(), 20f)
             path.lineTo((centerX + lineWidth).toFloat(), 20f + lineHeight)
-            path.quadTo((centerX + lineWidth * 3 / 10).toFloat(),20f + lineHeight - 5,(centerX + lineWidth * 7 / 10).toFloat(),20f + lineHeight - 5)
-            path.lineTo(centerX.toFloat(), 20f + lineHeight)
-            path.close()
+            path.quadTo((centerX + lineWidth / 4).toFloat(),20f + lineHeight - 5,centerX.toFloat(),20f + lineHeight)
             canvas.drawPath(path, paint)
             canvas.restore()
         }
@@ -89,27 +87,27 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
         val text = "13:51:00"
         val text2 = "星期日"
-        val startCenterX = (mWidth  - textPaint.measureText(text)) / 2 + 60
-        val startCenterX2 = (mWidth  - textPaint.measureText(text2)) / 2 + 50
+        val startCenterX = (mWidth  - textPaint.measureText(text)) / 2 + lineHeight
+        val startCenterX2 = (mWidth  - textPaint.measureText(text2)) / 2 + lineHeight - 15
         canvas.drawText(text, startCenterX, centerY.toFloat(), textPaint)
-        canvas.drawText(text2, startCenterX2, (centerY + 50).toFloat(), textPaint)
+        canvas.drawText(text2, startCenterX2, centerY + 50f, textPaint)
 
-        val textRadios = mWidth / 2 - 50 //文字构成的圆的半径
+        val textRadios = mWidth / 2 - lineHeight //文字构成的圆的半径
         val s = arrayOf("12", "3", "6", "9")
         for (i in 0..3) {
             var diffX = 0
             var diffY = 0
             if(i == 0){
                 diffX = 10
-                diffY = 60
+                diffY = lineHeight.toInt()
             }else if(i == 1){
-                diffX = -60
+                diffX = (-lineHeight).toInt()
                 diffY = 0
             }else if(i == 2){
                 diffX = 10
-                diffY = -60
+                diffY = (-lineHeight).toInt()
             }else if(i == 3){
-                diffX = 70
+                diffX = lineHeight.toInt()
                 diffY = 10
             }
             // Math.PI  就是 π 3.1415926    实际上他就是180°
