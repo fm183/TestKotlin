@@ -19,8 +19,8 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private var path = Path()
     private var textPaint = TextPaint()
     private var rectF = RectF(edgeDistance,edgeDistance,edgeDistance,edgeDistance)
-    private var lineHeight = 20f
-    private var count = 96
+    private var lineHeight = 80f
+    private var count = 36
     private var startCount = 39
     private var endCount = 43
 
@@ -74,7 +74,7 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             path.moveTo(centerX.toFloat(), 20f)
             path.lineTo((centerX + lineWidth).toFloat(), 20f)
             path.lineTo((centerX + lineWidth).toFloat(), 20f + lineHeight)
-            path.arcTo(rectF,0f,90f,false)
+            path.quadTo((centerX + lineWidth * 3 / 10).toFloat(),20f + lineHeight - 5,(centerX + lineWidth * 7 / 10).toFloat(),20f + lineHeight - 5)
             path.lineTo(centerX.toFloat(), 20f + lineHeight)
             path.close()
             canvas.drawPath(path, paint)
@@ -117,6 +117,9 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             val startY = (mWidth / 2 - textRadios * cos(Math.PI / 2 * i) + textPaint.measureText(s[i]) / 2 + diffY).toFloat()
             canvas.drawText(s[i], startX, startY, textPaint)
         }
+
+        canvas.save()
+
     }
 
     fun setCount(count: Int){
