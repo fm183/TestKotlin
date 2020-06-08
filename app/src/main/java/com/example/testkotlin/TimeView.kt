@@ -1,10 +1,7 @@
 package com.example.testkotlin
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
@@ -21,6 +18,11 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private var paint = Paint()
     private var path = Path()
     private var textPaint = TextPaint()
+    private var rectF = RectF(edgeDistance,edgeDistance,edgeDistance,edgeDistance)
+    private var lineHeight = 20f
+    private var count = 96
+    private var startCount = 39
+    private var endCount = 43
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -50,25 +52,30 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         paint.style = Paint.Style.FILL_AND_STROKE
 
         val allWidth = Math.PI * radios * 2
-        val count = 48
+
         val ringValue = (360 - count * 0.5f) / count
         val tmpWidth = allWidth / 360
         val lineWidth = (tmpWidth * ringValue) / 1.5
+
+        rectF.right = centerX.toFloat()
+        rectF.left = (centerX + lineWidth).toFloat()
+        rectF.top = lineHeight
+        rectF.bottom = lineHeight
         var rotateValue = 0f
         for (i in 0 until count) {
             canvas.save()
-            if (i in 39..43) {
+            if (i in startCount..endCount) {
                 paint.color = Color.RED
             } else {
                 paint.color = Color.WHITE
             }
             canvas.rotate(rotateValue, centerX.toFloat(), centerY.toFloat())
             rotateValue += ringValue + 0.5f
-            path.moveTo(centerX.toFloat(), 80f)
-            path.lineTo(centerX.toFloat(), 80f)
-            path.lineTo((centerX + lineWidth).toFloat(), 80f)
+            path.moveTo(centerX.toFloat(), 20f)
             path.lineTo((centerX + lineWidth).toFloat(), 20f)
-            path.lineTo(centerX.toFloat(), 20f)
+            path.lineTo((centerX + lineWidth).toFloat(), 20f + lineHeight)
+            path.arcTo(rectF,0f,90f,false)
+            path.lineTo(centerX.toFloat(), 20f + lineHeight)
             path.close()
             canvas.drawPath(path, paint)
             canvas.restore()
@@ -103,7 +110,7 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 diffY = -60
             }else if(i == 3){
                 diffX = 70
-                diffY = 10;
+                diffY = 10
             }
             // Math.PI  就是 π 3.1415926    实际上他就是180°
             val startX = (mWidth / 2 + textRadios * sin(Math.PI / 2 * i) - textPaint.measureText(s[i]) / 2 + diffX).toFloat()
@@ -111,4 +118,13 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             canvas.drawText(s[i], startX, startY, textPaint)
         }
     }
+
+    fun setCount(count: Int){
+        this.count = count
+    }
+
+    fun setLineHeight(lineHeight:Float){
+        this.lineHeight = lineHeight
+    }
+
 }
