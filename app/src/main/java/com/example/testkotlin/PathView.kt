@@ -1,10 +1,7 @@
 package com.example.testkotlin
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 
@@ -15,6 +12,7 @@ class PathView(context: Context?, attrs: AttributeSet?) :
     private var path = Path()
     private var mWidth = 0
     private var mHeight = 0
+    private var rectF = RectF()
 
 
     override fun onDraw(canvas: Canvas) {
@@ -45,9 +43,18 @@ class PathView(context: Context?, attrs: AttributeSet?) :
 
         val lineHeight = 80
         val lineWidth = 40
-        path.moveTo((centerX).toFloat(), (lineHeight + 1).toFloat())
-        path.quadTo((centerX + lineWidth / 2).toFloat(), (lineHeight - 10).toFloat(),(centerX + lineWidth).toFloat(), (1 +lineHeight).toFloat())
+//        path.moveTo((centerX).toFloat(), (lineHeight + 1).toFloat())
+//        path.quadTo((centerX + lineWidth / 2).toFloat(), (lineHeight - 10).toFloat(),(centerX + lineWidth).toFloat(), (1 +lineHeight).toFloat())
+
+//        path.moveTo(300f,300f)
+//        path.cubicTo(300f,300f,400f,200f,600f,300f)
+        rectF.left = centerX.toFloat()
+        rectF.right = (centerX + lineWidth * 2).toFloat()
+        rectF.top = centerY.toFloat()
+        rectF.bottom = (centerY + lineHeight * 2).toFloat()
+        path.arcTo(rectF,0f,180f)
         canvas.drawPath(path, paint)
+
     }
 
 
