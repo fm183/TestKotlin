@@ -20,7 +20,7 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private var textPaint = TextPaint()
     private var rectF = RectF(edgeDistance,edgeDistance,edgeDistance,edgeDistance)
     private var lineHeight = 40f
-    private var count = 96
+    private var count = 48
     private var startCount = 39
     private var endCount = 43
 
@@ -55,7 +55,7 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
         val ringValue = (360 - count * 0.5f) / count
         val tmpWidth = allWidth / 360
-        val lineWidth = (tmpWidth * ringValue) / 1.5
+        val lineWidth = (tmpWidth * ringValue) / 1.3
 
         rectF.right = centerX.toFloat()
         rectF.left = (centerX + lineWidth).toFloat()
@@ -74,7 +74,7 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             path.moveTo(centerX.toFloat(), 20f)
             path.lineTo((centerX + lineWidth).toFloat(), 20f)
             path.lineTo((centerX + lineWidth).toFloat(), 20f + lineHeight)
-            path.quadTo((centerX + lineWidth / 2).toFloat(),20f + lineHeight - 1,centerX.toFloat(),20f + lineHeight)
+            path.quadTo((centerX + lineWidth / 2f).toFloat(),20f + lineHeight - 3,centerX.toFloat(),20f + lineHeight)
             canvas.drawPath(path, paint)
             canvas.restore()
         }

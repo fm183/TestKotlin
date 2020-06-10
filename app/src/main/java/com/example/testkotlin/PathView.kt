@@ -13,6 +13,8 @@ class PathView(context: Context?, attrs: AttributeSet?) :
 
     private var paint = Paint()
     private var path = Path()
+    private var mWidth = 0
+    private var mHeight = 0
 
 
     override fun onDraw(canvas: Canvas) {
@@ -22,11 +24,30 @@ class PathView(context: Context?, attrs: AttributeSet?) :
         paint.style = Paint.Style.STROKE
         paint.isAntiAlias = true
         paint.color = Color.BLACK
+        paint.strokeWidth = 3f
 
-        path.moveTo(width / 2f - 100,height / 2f - 100)
-        path.quadTo(width / 2f - 50,height / 2f - 150,width / 2f,height / 2f)
-        canvas.drawPath(path,paint)
+        mWidth = if (width > height) {
+            height
+        } else {
+            width
+        }
+        mHeight = if (height > width) {
+            width
+        } else {
+            height
+        }
 
+        val centerX = mWidth / 2
+        val centerY = mHeight / 2
+        val radios = (mWidth / 2) - 10f
+
+//        canvas.drawCircle(centerX.toFloat(), centerY.toFloat(),radios,paint )
+
+        val lineHeight = 80
+        val lineWidth = 40
+        path.moveTo((centerX).toFloat(), (lineHeight + 1).toFloat())
+        path.quadTo((centerX + lineWidth / 2).toFloat(), (lineHeight - 10).toFloat(),(centerX + lineWidth).toFloat(), (1 +lineHeight).toFloat())
+        canvas.drawPath(path, paint)
     }
 
 

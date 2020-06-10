@@ -23,19 +23,22 @@
         android:visibility="gone"
         app:progress="0.5"
         app:baseColor="#000"
-        app:progressColor="#aaa"/>
+        app:progressColor="#aaa" />
 
     <com.example.testkotlin.TimeView
         android:id="@+id/time_view"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="400dp"
-        android:layout_height="400dp"/>
+        android:layout_height="400dp"
+        android:visibility="visible"/>
     <com.example.testkotlin.PathView
         android:id="@+id/path_view"
         app:layout_constraintTop_toBottomOf="@id/time_view"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="400dp"
-        android:layout_height="400dp"/>
+        android:layout_height="400dp"
+        android:visibility="visible"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
