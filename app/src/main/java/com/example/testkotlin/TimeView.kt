@@ -20,7 +20,7 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private var textPaint = TextPaint()
     private var rectF = RectF(edgeDistance,edgeDistance,edgeDistance,edgeDistance)
     private var lineHeight = 40f
-    private var count = 48
+    private var count = 24
     private var startCount = 39
     private var endCount = 43
 
@@ -55,7 +55,7 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
         val ringValue = (360 - count * 0.5f) / count
         val tmpWidth = allWidth / 360
-        val lineWidth = (tmpWidth * ringValue) / 1.3
+        val lineWidth = (tmpWidth * ringValue) / 1.1
 
         rectF.right = centerX.toFloat()
         rectF.left = (centerX + lineWidth).toFloat()
@@ -71,10 +71,12 @@ class TimeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             }
             canvas.rotate(rotateValue, centerX.toFloat(), centerY.toFloat())
             rotateValue += ringValue + 0.5f
-            path.moveTo(centerX.toFloat(), 20f)
-            path.lineTo((centerX + lineWidth).toFloat(), 20f)
-            path.lineTo((centerX + lineWidth).toFloat(), 20f + lineHeight)
-            path.quadTo((centerX + lineWidth / 2f).toFloat(),20f + lineHeight - 3,centerX.toFloat(),20f + lineHeight)
+            path.moveTo(centerX.toFloat(), 10f)
+            path.lineTo((centerX + lineWidth).toFloat(), 10f)
+            path.lineTo((centerX + lineWidth - 3).toFloat(),  lineHeight)
+            path.quadTo((centerX + lineWidth / 2f).toFloat(),lineHeight - 10,centerX.toFloat() + 3f, lineHeight)
+//            path.lineTo(centerX.toFloat() + 3f,0f+lineHeight)
+            path.close()
             canvas.drawPath(path, paint)
             canvas.restore()
         }
