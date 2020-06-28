@@ -4,15 +4,48 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.lang.ref.WeakReference;
+
 public class CircleTimeView extends View {
+
+    private static final class MyWeakHandler extends Handler{
+
+        private WeakReference<CircleTimeView> weakReference;
+
+        private MyWeakHandler(CircleTimeView circleTimeView){
+            weakReference = new WeakReference<>(circleTimeView);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+
+            final CircleTimeView circleTimeView = weakReference == null ? null : weakReference.get();
+            if (circleTimeView == null || circleTimeView.myWeakHandler == null) {
+                return;
+            }
+            circleTimeView.myWeakHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    circleTimeView.updateTime();
+                }
+            },500);
+        }
+    }
+
 
     private Paint paintCircle;
     private Paint paintArc;
@@ -29,6 +62,11 @@ public class CircleTimeView extends View {
     private float mAngle;
     private RectF rectF;
     private TextPaint textPaint;
+    private int[] colors = new int[]{0xFFDC143C,0xFFFFD700,0xFF0000FF,0xFF00FF7F};
+    private SparseIntArray showProgressPositionArray = new SparseIntArray();
+    private Rect rect;
+    private final String[] texts = new String[]{"12","03","06","09"};
+    private MyWeakHandler myWeakHandler;
 
     public CircleTimeView(Context context) {
         this(context,null);
@@ -57,8 +95,17 @@ public class CircleTimeView extends View {
         paintArc.setStyle(Paint.Style.STROKE);
         paintArc.setStrokeWidth(circle_width);
 
+        textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        textPaint.setStyle(Paint.Style.FILL);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setColor(Color.WHITE);
+        textPaint.setTextSize(30);
+
         mAngle = (360f - COUNT * MARGIN_ANGLE) / COUNT;
         rectF = new RectF();
+        rect = new Rect();
+        myWeakHandler = new MyWeakHandler(this);
+        updateTime();
     }
 
     @Override
@@ -94,11 +141,69 @@ public class CircleTimeView extends View {
 
         float startAngle = -90;
         for (int i = 0; i < COUNT;i ++){
-            canvas.drawArc(rectF, startAngle, mAngle, false, paintArc);
+            if (showProgressPositionArray.indexOfKey(i) >= 0) {
+                int CHILD_COUNT = 4;
+                float tmpAngle = mAngle / CHILD_COUNT;
+                float tmpStartAngle = startAngle;
+                for (int j = 0; j < CHILD_COUNT; j ++){
+                    paintArc.setColor(colors[j]);
+                    canvas.drawArc(rectF, tmpStartAngle, tmpAngle, false, paintArc);
+                    tmpStartAngle += tmpAngle;
+                }
+            }else {
+                paintArc.setColor(arcColor);
+                canvas.drawArc(rectF, startAngle, mAngle, false, paintArc);
+            }
+
             startAngle += mAngle + MARGIN_ANGLE;
         }
 
 
+        textPaint.getTextBounds(texts[0],0,texts[0].length(),rect);
+        canvas.drawText(texts[0],mCenterX,(mCenterY - mRadio) * 2 + (rect.bottom - rect.top) + 20,textPaint);
+        canvas.drawText(texts[1],mCenterX + mRadio - (rect.right - rect.left) - circle_width / 2,mCenterY,textPaint);
+        canvas.drawText(texts[2],mCenterX ,mCenterY + mRadio - (rect.bottom - rect.top) - circle_width / 2,textPaint);
+        canvas.drawText(texts[3],(mCenterX - mRadio) * 2 + (rect.right - rect.left),mCenterY,textPaint);
 
+        String[] times = getTimes();
+        String text = times[0];
+        textPaint.setTextSize(60);
+        textPaint.getTextBounds(text,0,text.length(),rect);
+        canvas.drawText(text,mCenterX,mCenterY - (rect.bottom - rect.top),textPaint);
+
+        String text2 = times[1];
+        textPaint.setTextSize(30);
+        textPaint.getTextBounds(text2,0,text2.length(),rect);
+        canvas.drawText(text2,mCenterX,mCenterY + (rect.bottom - rect.top),textPaint);
     }
+
+    public void setProgressPosition(int ... positions){
+        showProgressPositionArray.clear();
+        for (int i : positions){
+            showProgressPositionArray.put(i,i);
+        }
+        postInvalidate();
+    }
+
+    public void setProgressPositionColors(int ... colors){
+        if (colors.length != 4) {
+            return;
+        }
+        this.colors = colors;
+        postInvalidate();
+    }
+
+    private String[] getTimes(){
+        String[] strings = new String[2];
+        strings[0] = DateTimeUtils.formatTime(System.currentTimeMillis());
+        strings[1] = DateTimeUtils.getWeek(System.currentTimeMillis());
+        return strings;
+    }
+
+    public void updateTime(){
+        postInvalidate();
+        myWeakHandler.sendEmptyMessage(0);
+    }
+
+
 }

@@ -99,6 +99,10 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        val circle_time_view = findViewById<CircleTimeView>(R.id.circle_time_view);
+        circle_time_view.setProgressPositionColors(Color.RED,Color.YELLOW,Color.BLUE,Color.GREEN)
+        circle_time_view.setProgressPosition(10)
+
     }
 
 
