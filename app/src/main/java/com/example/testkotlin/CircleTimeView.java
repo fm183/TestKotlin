@@ -169,12 +169,12 @@ public class CircleTimeView extends View {
         String text = times[0];
         textPaint.setTextSize(60);
         textPaint.getTextBounds(text,0,text.length(),rect);
-        canvas.drawText(text,mCenterX,mCenterY - (rect.bottom - rect.top),textPaint);
+        canvas.drawText(text,mCenterX,mCenterY - (rect.bottom - rect.top) / 2f,textPaint);
 
         String text2 = times[1];
         textPaint.setTextSize(30);
         textPaint.getTextBounds(text2,0,text2.length(),rect);
-        canvas.drawText(text2,mCenterX,mCenterY + (rect.bottom - rect.top),textPaint);
+        canvas.drawText(text2,mCenterX,mCenterY + (rect.bottom - rect.top) / 2f,textPaint);
     }
 
     public void setProgressPosition(int ... positions){
