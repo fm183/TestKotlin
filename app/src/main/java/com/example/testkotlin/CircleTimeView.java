@@ -62,8 +62,9 @@ public class CircleTimeView extends View {
     private float mAngle;
     private RectF rectF;
     private TextPaint textPaint;
-    private int[] colors = new int[]{0xFFDC143C,0xFFFFD700,0xFF0000FF,0xFF00FF7F};
-    private SparseIntArray showProgressPositionArray = new SparseIntArray();
+    private int[] colors = new int[]{Color.WHITE,Color.RED,Color.BLUE};
+    private SparseIntArray showFirstProgressPositionArray = new SparseIntArray();
+    private SparseIntArray showSecondProgressPositionArray = new SparseIntArray();
     private Rect rect;
     private final String[] texts = new String[]{"12","03","06","09"};
     private MyWeakHandler myWeakHandler;
@@ -140,24 +141,24 @@ public class CircleTimeView extends View {
         canvas.drawCircle(mCenterX,mCenterY,mRadio,paintCircle);
 
         float startAngle = -90;
+        int count = 0;
         for (int i = 0; i < COUNT;i ++){
-            if (showProgressPositionArray.indexOfKey(i) >= 0) {
-                int CHILD_COUNT = 4;
-                float tmpAngle = mAngle / CHILD_COUNT;
-                float tmpStartAngle = startAngle;
-                for (int j = 0; j < CHILD_COUNT; j ++){
-                    paintArc.setColor(colors[j]);
-                    canvas.drawArc(rectF, tmpStartAngle, tmpAngle, false, paintArc);
-                    tmpStartAngle += tmpAngle;
+            int CHILD_COUNT = 4;
+            float tmpAngle = mAngle / CHILD_COUNT;
+            float tmpStartAngle = startAngle;
+            for (int j = 0; j < CHILD_COUNT; j ++){
+                int value = showFirstProgressPositionArray.indexOfKey(count) < 0 ? 0 : 1;
+                if (value == 0) {
+                    value = showSecondProgressPositionArray.indexOfKey(count) < 0 ? 0 : 2;
                 }
-            }else {
-                paintArc.setColor(arcColor);
-                canvas.drawArc(rectF, startAngle, mAngle, false, paintArc);
+                paintArc.setColor(colors[value]);
+                count ++;
+                canvas.drawArc(rectF, tmpStartAngle, tmpAngle, false, paintArc);
+                tmpStartAngle += tmpAngle;
             }
-
             startAngle += mAngle + MARGIN_ANGLE;
-        }
 
+        }
 
         textPaint.getTextBounds(texts[0],0,texts[0].length(),rect);
         canvas.drawText(texts[0],mCenterX,(mCenterY - mRadio) * 2 + (rect.bottom - rect.top) + 20,textPaint);
@@ -178,18 +179,42 @@ public class CircleTimeView extends View {
     }
 
     public void setProgressPosition(int ... positions){
-        showProgressPositionArray.clear();
+        showFirstProgressPositionArray.clear();
         for (int i : positions){
-            showProgressPositionArray.put(i,i);
+            showFirstProgressPositionArray.put(i,i);
         }
         postInvalidate();
     }
 
-    public void setProgressPositionColors(int ... colors){
-        if (colors.length != 4) {
-            return;
+    public void setDefaultColor(int color){
+        colors[0] = color;
+        postInvalidate();
+    }
+
+    public void setFirstColor(int color){
+        colors[1] = color;
+        postInvalidate();
+    }
+
+
+    public void setSecondColor(int color){
+        colors[2] = color;
+        postInvalidate();
+    }
+
+    public void setFirstProgressPosition(int startPosition,int endPosition){
+        showFirstProgressPositionArray.clear();
+        for (int i = startPosition - 1;i < endPosition;i ++){
+            showFirstProgressPositionArray.put(i,1);
         }
-        this.colors = colors;
+        postInvalidate();
+    }
+
+    public void setSecondProgressPosition(int startPosition,int endPosition){
+        showSecondProgressPositionArray.clear();
+        for (int i = startPosition - 1;i < endPosition;i ++){
+            showSecondProgressPositionArray.put(i,2);
+        }
         postInvalidate();
     }
 
