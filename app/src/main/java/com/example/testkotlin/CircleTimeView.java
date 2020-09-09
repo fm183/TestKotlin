@@ -32,19 +32,20 @@ public class CircleTimeView extends View {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-
-            final CircleTimeView circleTimeView = weakReference == null ? null : weakReference.get();
-            if (circleTimeView == null || circleTimeView.myWeakHandler == null) {
+            CircleTimeView circleTimeView = weakReference.get();
+            if (circleTimeView == null) {
                 return;
             }
-            circleTimeView.myWeakHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    circleTimeView.updateTime();
-                }
-            },500);
+            postDelayed(circleTimeView.runnable,500);
         }
     }
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            updateTime();
+        }
+    };
 
 
     private Paint paintCircle;
@@ -230,5 +231,11 @@ public class CircleTimeView extends View {
         myWeakHandler.sendEmptyMessage(0);
     }
 
-
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (myWeakHandler != null) {
+            myWeakHandler.removeCallbacks(runnable);
+        }
+    }
 }
