@@ -1,4 +1,4 @@
-package com.example.testkotlin
+package com.example.testkotlin.service
 
 import android.app.Service
 import android.content.Intent

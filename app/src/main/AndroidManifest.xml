@@ -9,19 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MemoryLeakActivity"></activity>
+
+        <activity android:name=".ui.activity.MemoryLeakActivity" />
 
         <service
-            android:name=".MessageService"
+            android:name=".service.MessageService"
             android:enabled="true"
             android:exported="true"
             android:process=":remote" />
         <service
-            android:name=".MyService"
+            android:name=".service.MyService"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

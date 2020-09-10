@@ -1,4 +1,4 @@
-package com.example.testkotlin;
+package com.example.testkotlin.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -16,6 +16,9 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.testkotlin.utils.DateTimeUtils;
+import com.example.testkotlin.R;
 
 import java.lang.ref.WeakReference;
 

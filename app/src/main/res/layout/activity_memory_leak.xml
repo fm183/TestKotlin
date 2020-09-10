@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MemoryLeakActivity">
+    tools:context=".ui.activity.MemoryLeakActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.example.testkotlin
+package com.example.testkotlin.view
 
 import android.content.Context
 import android.graphics.*

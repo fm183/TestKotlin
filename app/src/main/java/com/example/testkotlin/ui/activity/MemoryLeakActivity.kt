@@ -1,9 +1,10 @@
-package com.example.testkotlin
+package com.example.testkotlin.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import com.example.testkotlin.R
 
 class MemoryLeakActivity : AppCompatActivity() {
 

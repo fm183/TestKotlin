@@ -1,4 +1,4 @@
-package com.example.testkotlin
+package com.example.testkotlin.ui.activity
 
 import android.content.ComponentName
 import android.content.Intent
@@ -14,6 +14,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testkotlin.R
+import com.example.testkotlin.config.Constant
+import com.example.testkotlin.service.MessageService
+import com.example.testkotlin.service.MyService
+import com.example.testkotlin.view.CircleTimeView
+import com.example.testkotlin.view.ProgressView
 
 class MainActivity : AppCompatActivity() {
 
@@ -69,10 +75,10 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         recyclerView.layoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
-        adapter.setOnItemClickListener(object: Adapter.OnItemClickListener{
+        adapter.setOnItemClickListener(object: Adapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
                 Toast.makeText(this@MainActivity, "item=$position",Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this@MainActivity,MemoryLeakActivity().javaClass))
+                startActivity(Intent(this@MainActivity, MemoryLeakActivity().javaClass))
             }
 
         })
@@ -81,11 +87,11 @@ class MainActivity : AppCompatActivity() {
         canvasView.setBaseColor(Color.BLACK)
         canvasView.setProgressColor(Color.GREEN)
         canvasView.setProgress(50)
-        val intent = Intent(this@MainActivity,MyService().javaClass)
+        val intent = Intent(this@MainActivity, MyService().javaClass)
         intent.putExtra("from","MainActivity")
         bindService(intent,serviceConnect,BIND_AUTO_CREATE)
 
-        val intentMessenger = Intent(this@MainActivity,MessageService().javaClass)
+        val intentMessenger = Intent(this@MainActivity, MessageService().javaClass)
         bindService(intentMessenger,messageServiceConnection, BIND_AUTO_CREATE)
 
         canvasView.setOnClickListener {
@@ -114,7 +120,7 @@ class MainActivity : AppCompatActivity() {
 
     class Adapter(private val data: List<String>) : RecyclerView.Adapter<ViewHolder>(){
 
-        private var onItemClickListener:OnItemClickListener? = null
+        private var onItemClickListener: OnItemClickListener? = null
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item,parent,false))

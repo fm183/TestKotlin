@@ -1,9 +1,10 @@
-package com.example.testkotlin
+package com.example.testkotlin.service
 
 import android.app.Service
 import android.content.Intent
 import android.os.*
 import android.util.Log
+import com.example.testkotlin.config.Constant
 
 class MessageService : Service() {
 

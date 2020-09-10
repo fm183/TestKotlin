@@ -1,4 +1,4 @@
-package com.example.testkotlin;
+package com.example.testkotlin.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.core.content.ContextCompat;
+
+import com.example.testkotlin.R;
 
 
 /**

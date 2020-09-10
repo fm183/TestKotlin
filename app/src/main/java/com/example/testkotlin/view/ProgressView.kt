@@ -1,4 +1,4 @@
-package com.example.testkotlin
+package com.example.testkotlin.view
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import com.example.testkotlin.R
 
 class ProgressView@JvmOverloads constructor(context: Context,
                                             attrs: AttributeSet? = null,

@@ -1,4 +1,4 @@
-package com.example.testkotlin
+package com.example.testkotlin.config
 
 object Constant {
     const val SERVICE_TYPE = 1
